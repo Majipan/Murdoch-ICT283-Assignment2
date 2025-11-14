@@ -1,0 +1,15 @@
+<map id="interfaceController" name="interfaceController">
+<area shape="rect" id="node1" title="Interface controller Controller that does all the calling to the functions and menu." alt="" coords="5,157,132,184"/>
+<area shape="rect" id="node2" href="$main_8cpp.html#a7989750d50d60806d18016780a77a97d" title="Ask user for month input." alt="" coords="180,5,259,32"/>
+<area shape="rect" id="node3" href="$main_8cpp.html#a4cbb76cea386dc64328f82ddb24bb23a" title="Ask user for year input." alt="" coords="184,56,255,83"/>
+<area shape="rect" id="node4" href="$main_8cpp.html#ae83fcdbeb2b6757fc741ae953b633ee1" title="Loop the menu until a valid input is obtained." alt="" coords="192,107,247,133"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#af567d972056d69e1223dca0ff8106f32" title="Option 1." alt="" coords="187,208,251,235"/>
+<area shape="rect" id="node10" href="$main_8cpp.html#a46035fa21178a12d3823151e2569388a" title="Option 2." alt="" coords="187,157,251,184"/>
+<area shape="rect" id="node11" href="$main_8cpp.html#ade222ecec97edaea708837384bd1c8c7" title="Option 3." alt="" coords="187,309,251,336"/>
+<area shape="rect" id="node13" href="$main_8cpp.html#a634212a9a3ca4168610a3bb8a2ed9d52" title="Option 4." alt="" coords="187,259,251,285"/>
+<area shape="rect" id="node6" href="$main_8cpp.html#ab2e0dc87deacc44d5011288d44806516" title="Get the average All the menu option uses this function to calculate mean as part of high cohesion &amp; m..." alt="" coords="343,208,449,235"/>
+<area shape="rect" id="node8" href="$main_8cpp.html#af5ad3511630b48af287593e7924a2400" title="Get the Standard Deviation All the menu option uses this function to calculate standard deviation as ..." alt="" coords="307,157,485,184"/>
+<area shape="rect" id="node9" href="$main_8cpp.html#a0c5a637faba1f676d1072e2a77d43aaa" title="Convert month from Int to String." alt="" coords="354,259,438,285"/>
+<area shape="rect" id="node7" href="$class_vector.html#a196e9eedc9a88a48f64e69e39405fa72" title="returns current number of elements in the vector" alt="" coords="533,183,625,209"/>
+<area shape="rect" id="node12" href="$main_8cpp.html#aad3dba4a8f69b7ee99082a86af40c663" title="Convert month from Int to String." alt="" coords="357,309,435,336"/>
+</map>

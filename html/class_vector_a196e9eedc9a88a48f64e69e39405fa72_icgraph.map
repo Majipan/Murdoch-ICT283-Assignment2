@@ -1,0 +1,13 @@
+<map id="Vector::size" name="Vector::size">
+<area shape="rect" id="node1" title="returns current number of elements in the vector" alt="" coords="748,132,840,159"/>
+<area shape="rect" id="node2" href="$main_8cpp.html#ab2e0dc87deacc44d5011288d44806516" title="Get the average All the menu option uses this function to calculate mean as part of high cohesion &amp; m..." alt="" coords="557,81,664,108"/>
+<area shape="rect" id="node9" href="$main_8cpp.html#af5ad3511630b48af287593e7924a2400" title="Get the Standard Deviation All the menu option uses this function to calculate standard deviation as ..." alt="" coords="521,132,700,159"/>
+<area shape="rect" id="node10" href="$_vector___test_8cpp.html#a1dcd6df2bcf82bae6a49c57ff6438085" title=" " alt="" coords="583,187,639,213"/>
+<area shape="rect" id="node3" href="$main_8cpp.html#af567d972056d69e1223dca0ff8106f32" title="Option 1." alt="" coords="344,157,408,184"/>
+<area shape="rect" id="node6" href="$main_8cpp.html#a46035fa21178a12d3823151e2569388a" title="Option 2." alt="" coords="344,56,408,83"/>
+<area shape="rect" id="node7" href="$main_8cpp.html#ade222ecec97edaea708837384bd1c8c7" title="Option 3." alt="" coords="344,5,408,32"/>
+<area shape="rect" id="node8" href="$main_8cpp.html#a634212a9a3ca4168610a3bb8a2ed9d52" title="Option 4." alt="" coords="344,107,408,133"/>
+<area shape="rect" id="node4" href="$main_8cpp.html#a0dd0cbafd4f900b28c5995c167e2b66b" title="Interface controller Controller that does all the calling to the functions and menu." alt="" coords="104,81,231,108"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,81,56,108"/>
+<area shape="rect" id="node11" href="$_vector___test_8cpp.html#ac357be5ea942ead86ddce7daffa13323" title=" " alt="" coords="279,209,473,250"/>
+</map>

@@ -1,0 +1,74 @@
+# depslib dependency file v1.0
+1760873103 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment1 - submission\date.cpp
+	"date.h"
+	<iostream>
+
+1760873116 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment1 - submission\date.h
+	<iostream>
+	<string>
+
+1760188669 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment1 - submission\time.cpp
+	"Time.h"
+	<iostream>
+	<string>
+
+1760188669 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment1 - submission\time.h
+	<iostream>
+	<string>
+
+1760880822 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment1 - submission\main.cpp
+	<iostream>
+	<cmath>
+	<string>
+	<fstream>
+	<sstream>
+	<windows.h>
+	"Date.h"
+	"Time.h"
+	"Vector.h"
+
+1760712639 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment1 - submission\vector.h
+	<cassert>
+
+1760764924 source:c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment1\date.cpp
+	"date.h"
+	<iostream>
+
+1760764924 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment1\date.h
+	<iostream>
+	<string>
+
+1760769348 source:c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment1\main.cpp
+	<iostream>
+	<cmath>
+	<string>
+	<fstream>
+	<sstream>
+	<windows.h>
+	"Date.h"
+	"Time.h"
+	"Vector.h"
+
+1760147664 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment1\time.h
+	<iostream>
+	<string>
+
+1760764924 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment1\vector.h
+	<cassert>
+
+1760147664 source:c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment1\time.cpp
+	"Time.h"
+	<iostream>
+	<string>
+
+1760885165 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment1 - submission\date_test.cpp
+	"Date.h"
+
+1760885164 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment1 - submission\time_test.cpp
+	"Time.h"
+
+1760885286 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment1 - submission\vector_test.cpp
+	"Vector.h"
+	"Date.h"
+	<string>
+
