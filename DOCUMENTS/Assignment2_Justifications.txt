@@ -1,0 +1,7 @@
+Justifications:
+
+-
+Did not completely move printing to view.cpp for stricter MVC rules, I would prefer to use View.cpp for the printing function by sending strings to it for printing. The reason for this is because I do not want to create dependencies by sending the Model's structured data response into View. In the event the business logic changes, View would also be required to adapt to the new structured data output from Model. Having them decoupled would mean I am able to easily change the View and Model without dependencies getting in the way.
+
+-
+In View.cpp, theres a View::askMonth() and View::askYear(). In theory, I could combine them and have a single function for asking inputs. However, the responsibility of the input validation would then fall back on the AppController after a response have been returned, this leads to the AppController having to request for a new input if the validation fails. IF theres a growing amount of features that requires asking the user for inputs, I might refactor this part to have a more flexible function to handle all types of inputs. But at this point when theres only 2, I prefer the View to handle the input validation directly as there is lesser overhead.
