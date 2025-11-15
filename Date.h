@@ -17,9 +17,6 @@ class Date{
         /** Getter for year */
         int getYear() const;
 
-        /** Getter for full date */
-        //std::string getFullDate() const;
-
         /** Setter for mark */
         void setDay(int d);
         /** Setter for mark */

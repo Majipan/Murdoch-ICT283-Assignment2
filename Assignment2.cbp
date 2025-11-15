@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Assignment1" />
+		<Option title="Assignment2Test" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -32,14 +32,20 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="AppController.cpp" />
+		<Unit filename="AppController.h" />
 		<Unit filename="Date.cpp" />
 		<Unit filename="Date.h" />
-		<Unit filename="Date_Test.cpp" />
+		<Unit filename="LoadData.cpp" />
+		<Unit filename="LoadData.h" />
+		<Unit filename="Model.cpp" />
+		<Unit filename="Model.h" />
 		<Unit filename="Time.cpp" />
 		<Unit filename="Time.h" />
-		<Unit filename="Time_Test.cpp" />
 		<Unit filename="Vector.h" />
-		<Unit filename="Vector_Test.cpp" />
+		<Unit filename="View.cpp" />
+		<Unit filename="View.h" />
+		<Unit filename="WindData.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

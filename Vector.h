@@ -10,30 +10,62 @@ template <class T>
 class Vector
 {
 	public:
-	    /** Constructor */
+	    /**
+	     * @brief Constructor
+	     * Initializes a vector with default capacity 1 and size 0
+	     */
 		Vector(int initialCapacity = 1);
 
-	    /** Destructor */
+	    /**
+	     * @brief Copy Constructor
+	     * @param other The other vector object to copy
+	     */
+		Vector(const Vector<T>& other);
+
+	    /**
+	     * @brief Destructor
+	     * Frees the memory in the heap
+	     */
 		~Vector();
 
-        /** Add element */
+        /**
+         * @brief Add element to the vector
+         * Resizes if necessary
+         * @param value Element of vector to add
+         */
         void append(const T& value);
 
-        /** Get Vector Size */
+        /**
+         * @brief Get Vector Size
+         * @return int of the number of elements in the vector
+         */
         int size() const;
 
-        /** Access element */
+        /**
+         * @brief Access element based on index
+         */
         const T& operator[](int index) const;
 
 	private:
-	    /** Pointer to array stored in heap */
+	    /**
+	     * @brief Pointer to array stored in heap
+	     */
         T* data;
-        /** Number of elements stored */
+
+        /**
+         * @brief Number of elements stored
+         */
         int vsize;
-        /** Allocated slots */
+
+        /**
+         * @brief Slots available to store elements
+         */
         int capacity;
 
-        /** Helper function */
+        /**
+         * @brief Helper function
+         * @param newCapacity Determines the new size of the Vector
+         */
         void resize(int newCapacity);
 };
 
@@ -45,14 +77,25 @@ class Vector
 template <class T>
 Vector<T>::Vector(int initialCapacity) : data(nullptr), vsize(0), capacity(initialCapacity)
 {
-    /** @brief Create the array based on the input capacity */
+    // Create the array based on the input capacity
     if (capacity > 0) {
         data = new T[capacity];
     }
 }
 
-/** Destructor
-* @brief Delete the data in the heap */
+/** Copy Constructor */
+template <class T>
+Vector<T>::Vector(const Vector<T>& other)
+{
+    capacity = other.capacity;
+    vsize = other.size();
+    data = new T[capacity];
+    for (int i = 0; i < other.size(); ++i) {
+        data[i] = other.data[i];
+    }
+}
+
+/** Destructor */
 template <class T>
 Vector<T>::~Vector()
 {
@@ -85,19 +128,17 @@ void Vector<T>::append(const T& value)
         resize(capacity * 2);       // resize the vector
     }
 
-    data[vsize++] = value;          // add the value into the array based on the number of elements, then increase vsize (pre-increment)
+    data[vsize++] = value;          // add the value into the array based on the number of elements, then increase vsize (post-increment)
 }
 
-/** Getter for vsize
-* @brief returns current number of elements in the vector */
+/** Getter for vsize */
 template <class T>
 int Vector<T>::size() const
 {
     return vsize;
 }
 
-/** Operator Override for []
-* @brief const Element access */
+/** Operator Override for [] */
 template <class T>
 const T& Vector<T>::operator[](int index) const
 {
