@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Assignment2Test" />
+		<Option title="Assignment2" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -45,7 +45,9 @@
 		<Unit filename="Vector.h" />
 		<Unit filename="View.cpp" />
 		<Unit filename="View.h" />
-		<Unit filename="WindData.h" />
+		<Unit filename="WeatherData.h" />
+		<Unit filename="WeatherType.cpp" />
+		<Unit filename="WeatherType.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
