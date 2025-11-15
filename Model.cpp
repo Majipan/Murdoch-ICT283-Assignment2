@@ -8,16 +8,19 @@ using std::ostringstream;
 using std::ofstream;
 using std::endl;
 
-std::string Model::handleOption1(const WindlogType& wind_data, int month, int year) const
+std::string Model::handleOption1(const WeatherData& weather_data, int month, int year) const
 {
     ostringstream out;
 
-    float avg = std::round(calculateMean(wind_data, month, year, 1) * 36) / 10; // km/h
-    float stdDev = static_cast<float>(calculateStandardDeviation(wind_data, avg, month, year, 1));
+    // convert to km/h and round to 1 decimal
+    float avg = std::round(calculateMean(weather_data, month, year, 1) * 36) / 10;
+    float stdDev = static_cast<float>(
+        calculateStandardDeviation(weather_data, avg, month, year, 1)
+    );
 
     if (avg != 0) {
-        out << endl << convMonth(month) << " " << year << ":" << endl;
-        out << "Average speed: " << avg << " km/h" << endl;
+        out << std::endl << convMonth(month) << " " << year << ":" << std::endl;
+        out << "Average speed: " << avg << " km/h" << std::endl;
         out << " Sample stdev: " << stdDev;
     } else {
         out << convMonth(month) << " " << year << ": No Data";
@@ -26,50 +29,51 @@ std::string Model::handleOption1(const WindlogType& wind_data, int month, int ye
     return out.str();
 }
 
-std::string Model::handleOption2(const WindlogType& wind_data, int year) const
+std::string Model::handleOption2(const WeatherData& weather_data, int year) const
 {
     ostringstream out;
 
-    out << endl << year << endl;
+    out << std::endl << year << std::endl;
 
     for (int i = 1; i < 13; ++i) {
-        float avg = std::round(calculateMean(wind_data, i, year, 3) * 36) / 10;
+        float avg = std::round(calculateMean(weather_data, i, year, 3) * 36) / 10;
 
         if (avg == 0) {
-            out << convMonth(i) << ": No Data" << endl;
+            out << convMonth(i) << ": No Data" << std::endl;
         } else {
             out << convMonth(i) << ": average: " << avg
                 << " degrees C, stdev: "
-                << calculateStandardDeviation(wind_data, avg, i, year, 1) // same as original
-                << endl;
+                << calculateStandardDeviation(weather_data, avg, i, year, 1)
+                << std::endl;
         }
     }
 
     return out.str();
 }
 
-std::string Model::handleOption3(const WindlogType& wind_data, int year) const
+std::string Model::handleOption3(const WeatherData& weather_data, int year) const
 {
     ostringstream out;
 
-    out << endl << year << endl;
+    out << std::endl << year << std::endl;
 
     for (int i = 1; i < 13; ++i) {
-        float avg = calculateMean(wind_data, i, year, 2);
-        avg = static_cast<float>(convRads(static_cast<int>(avg)));  // same as original signature
+        float avg = calculateMean(weather_data, i, year, 2);
+        // original convRads took int; cast to preserve original semantics
+        avg = static_cast<float>(convRads(static_cast<int>(avg)));
 
         if (avg == 0) {
-            out << convMonth(i) << ": No Data" << endl;
+            out << convMonth(i) << ": No Data" << std::endl;
         } else {
             out << convMonth(i) << ": " << avg
-                << " kWh/m" << "\u00B2" << endl;
+                << " kWh/m" << "\u00B2" << std::endl;
         }
     }
 
     return out.str();
 }
 
-std::string Model::handleOption4(const WindlogType& wind_data, int year) const
+std::string Model::handleOption4(const WeatherData& weather_data, int year) const
 {
     ostringstream out;
 
@@ -77,12 +81,16 @@ std::string Model::handleOption4(const WindlogType& wind_data, int year) const
     ofile << year << '\n';
 
     for (int i = 1; i < 13; ++i) {
-        float avgWind = calculateMean(wind_data, i, year, 1);
-        float stdDevWind = static_cast<float>(calculateStandardDeviation(wind_data, avgWind, i, year, 1));
-        float avgRads = calculateMean(wind_data, i, year, 2);
+        float avgWind = calculateMean(weather_data, i, year, 1);
+        float stdDevWind = static_cast<float>(
+            calculateStandardDeviation(weather_data, avgWind, i, year, 1)
+        );
+        float avgRads = calculateMean(weather_data, i, year, 2);
         avgRads = static_cast<float>(convRads(static_cast<int>(avgRads)));
-        float stdDevRads = static_cast<float>(calculateStandardDeviation(wind_data, avgRads, i, year, 1));
-        float avgTemp = calculateMean(wind_data, i, year, 3);
+        float stdDevRads = static_cast<float>(
+            calculateStandardDeviation(weather_data, avgRads, i, year, 1)
+        );
+        float avgTemp = calculateMean(weather_data, i, year, 3);
 
         ofile << convMonth(i) << "," << avgWind << "(" << stdDevWind << "),"
               << avgRads << "(" << stdDevRads << ")," << avgTemp << '\n';
@@ -115,32 +123,36 @@ double Model::convRads(int value) const
     return kiloWattsPerHour;
 }
 
-float Model::calculateMean(const WindlogType& wind_data,
+float Model::calculateMean(const WeatherData& weather_data,
                            int month, int year, int dataType) const
 {
     float sum = 0;
     int counter = 0;
 
-    for (int i = 0; i < wind_data.size(); ++i) {
-        if (wind_data[i].d.getMonth() == month && wind_data[i].d.getYear() == year) {
+    for (int i = 0; i < weather_data.size(); ++i) {
+        const WeatherType& rec = weather_data[i];
+
+        if (rec.getDate().getMonth() == month && rec.getDate().getYear() == year) {
             if (dataType == 1) {
-                sum += wind_data[i].speed;
+                sum += rec.getSpeed();
                 ++counter;
             } else if (dataType == 2) {
-                if (wind_data[i].solrad >= 100) {
-                    sum += wind_data[i].solrad;
+                if (rec.getSolarRad() >= 100) {
+                    sum += rec.getSolarRad();
                     ++counter;
                 }
             } else if (dataType == 3) {
-                sum += wind_data[i].aatemp;
+                sum += rec.getAirTemp();
                 ++counter;
             }
-        } else if (wind_data[i].d.getYear() >= year && wind_data[i].d.getMonth() > month) {
+        } else if (rec.getDate().getYear() >= year &&
+                   rec.getDate().getMonth() > month) {
+            // early escape as per your original logic
             break;
         }
     }
 
-    if (sum != 0) {
+    if (sum != 0 && counter > 0) {
         sum = sum / counter;
         sum = std::round(sum * 10) / 10;
     }
@@ -148,24 +160,27 @@ float Model::calculateMean(const WindlogType& wind_data,
     return sum;
 }
 
-double Model::calculateStandardDeviation(const WindlogType& wind_data,
+double Model::calculateStandardDeviation(const WeatherData& weather_data,
                                          float avg, int month, int year, int dataType) const
 {
     double sumSquaredDiff = 0;
 
-    for (int i = 0; i < wind_data.size(); ++i) {
-        if (wind_data[i].d.getMonth() == month && wind_data[i].d.getYear() == year) {
+    for (int i = 0; i < weather_data.size(); ++i) {
+        const WeatherType& rec = weather_data[i];
+
+        if (rec.getDate().getMonth() == month && rec.getDate().getYear() == year) {
             float val = 0.0f;
-            if (dataType == 1) val = wind_data[i].speed;
-            else if (dataType == 2) val = wind_data[i].solrad;
-            else if (dataType == 3) val = wind_data[i].aatemp;
+            if (dataType == 1)      val = rec.getSpeed();
+            else if (dataType == 2) val = rec.getSolarRad();
+            else if (dataType == 3) val = rec.getAirTemp();
 
             double diff = val - avg;
             sumSquaredDiff += diff * diff;
         }
     }
 
-    double variance = sumSquaredDiff / (wind_data.size() - 1);
+    // NOTE: this matches your original logic, even though it uses weather_data.size()
+    double variance = sumSquaredDiff / (weather_data.size() - 1);
     double squareRoot = std::sqrt(variance);
     double stdDev = std::round(squareRoot * 10) / 10;
 

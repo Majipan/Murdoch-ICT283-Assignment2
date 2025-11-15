@@ -11,9 +11,10 @@ using std::cerr;
 using std::endl;
 using std::stof;
 
-void LoadData::load(WindlogType& wind_data) const
+void LoadData::load(WeatherData& weather_data) const
 {
-    /// Open data_source.txt to get actual CSV path
+    // ----------------------------------------
+    // Read data_source.txt to get the CSV path
     ifstream fileSource("data/data_source.txt");
     if (!fileSource.is_open()) {
         cerr << "Error opening data_source.txt" << endl;
@@ -24,21 +25,23 @@ void LoadData::load(WindlogType& wind_data) const
     getline(fileSource, path);
     fileSource.close();
 
-    /// Open the real data file
+    // ----------------------------------------
+    // Open the actual data file
     ifstream file("data/" + path);
     if (!file.is_open()) {
         cerr << "Error opening source data file" << endl;
         return;
     }
 
-    /// Read header line, find indexes
+    // ----------------------------------------
+    // Read header and determine column indices
     string line;
     getline(file, line);
     stringstream ssHead(line);
     string header;
     int index = 0;
 
-    int dtIndex = 0;
+    int dtIndex  = 0;
     int spdIndex = 0;
     int radIndex = 0;
     int airIndex = 0;
@@ -56,7 +59,8 @@ void LoadData::load(WindlogType& wind_data) const
         ++index;
     }
 
-    /// Read data lines
+    // ----------------------------------------
+    // Read data rows
     while (getline(file, line)) {
         stringstream ss(line);
         string value;
@@ -80,28 +84,30 @@ void LoadData::load(WindlogType& wind_data) const
             ++index;
         }
 
-        /// skip bad data (empty datetime)
+        // Skip lines with empty date/time
         if (dateTime.empty()) {
             continue;
         }
 
-        /// --- Date/Time parsing ---
+        // --- Split Date/Time ---
         string dateVal, timeVal;
         stringstream dt(dateTime);
         getline(dt, dateVal, ' ');
         getline(dt, timeVal);
 
+        // --- Parse date ---
         string dayStr, monthStr, yearStr;
         stringstream dateSS(dateVal);
         getline(dateSS, dayStr, '/');
         getline(dateSS, monthStr, '/');
         getline(dateSS, yearStr);
 
-        int day = std::stoi(dayStr);
+        int day   = std::stoi(dayStr);
         int month = std::stoi(monthStr);
-        int year = std::stoi(yearStr);
+        int year  = std::stoi(yearStr);
         Date d(day, month, year);
 
+        // --- Parse time ---
         string hourVal, minVal;
         stringstream timeSS(timeVal);
         getline(timeSS, hourVal, ':');
@@ -111,18 +117,21 @@ void LoadData::load(WindlogType& wind_data) const
         t.setHour(hourVal);
         t.setMins(minVal);
 
-        /// Wind speed (m/s)
-        float speed = std::stof(windSpd);
-
-        /// Solar radiation
-        float solar = std::stof(solarRad);
-
-        /// Ambient air
+        // --- Parse numeric values ---
+        float speed   = std::stof(windSpd);
+        float solar   = std::stof(solarRad);
         float ambient = std::stof(ambAir);
 
-        /// Save record
-        WindRecType record{ d, t, speed, solar, ambient };
-        wind_data.append(record);
+        // --- Create WeatherType record ---
+        WeatherType record;
+        record.setDate(d);
+        record.setTime(t);
+        record.setSpeed(speed);
+        record.setSolarRad(solar);
+        record.setAirTemp(ambient);
+
+        // Append to container
+        weather_data.append(record);
     }
 
     file.close();
