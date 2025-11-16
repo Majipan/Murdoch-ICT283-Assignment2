@@ -8,3 +8,6 @@ In View.cpp, theres a View::askMonth() and View::askYear(). In theory, I could c
 
 -
 The relationship between AppController and Model is such that weather_data will always be sent as a parameter each time a menu option has been selected. It is possible to send a weather_data pointer into Model during instantiation (either as part of constructor overload or setter) to reduce parameter bloat. However, this would cause a tighter coupling between Model and WeatherData even though its only through a pointer. I would prefer to keep the application stateless and allow Model to handle a variety of data structures with a single parameter, instead of having to instantiate/setter with each data structure(BST/Vector) this application uses. This allows better scalability.
+
+-
+During Loading of the data, Bst will currently ignore any duplicated rows that have similar Date & Time and only the earliest row will be inserted. I am choosing to do this because its the most convenient way to address duplicated records. It is POSSIBLE to write a logic to perhaps average the data and I am well aware of other methods, however as there isn't an explicit way mentioned to handle this, I have chosen to use the most convenient method.

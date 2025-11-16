@@ -33,7 +33,7 @@ class Vector
          * Resizes if necessary
          * @param value Element of vector to add
          */
-        void append(const T& value);
+        void insert(const T& value);
 
         /**
          * @brief Get Vector Size
@@ -42,7 +42,7 @@ class Vector
         int size() const;
 
         /**
-         * @brief Access element based on index
+         * @brief Operator Override; Access element based on index
          */
         const T& operator[](int index) const;
 
@@ -121,7 +121,7 @@ void Vector<T>::resize(int newCapacity)
 
 /** Add Element */
 template <class T>
-void Vector<T>::append(const T& value)
+void Vector<T>::insert(const T& value)
 {
     // if the vector no longer have space left
     if (vsize >= capacity) {

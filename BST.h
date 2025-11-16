@@ -1,5 +1,5 @@
-#ifndef BST_H
-#define BST_H
+#ifndef Bst_H
+#define Bst_H
 #include <iostream>
 
 using std::cout;
@@ -24,33 +24,111 @@ struct Node {
  */
 template <typename T>
 class Bst {
+
+    /// =============================================================================
     public:
-        /** Constructor & Destructor */
+        /** @brief Constructor */
         Bst();
+        /** @brief Copy Constructor */
+        Bst(const Bst<T>& other);
+        /** @brief Destructor */
         ~Bst();
 
-        /** Function pointer */
-        using visitFunc = void (*)(const T&);           /// typedef for the function because compiler doesn't know what T is until later as it is a template type parameter
+        /**
+         * @brief Function pointer
+         * Typedef for the function because compiler doesn't know what T is until later as it is a template type parameter
+         */
+        using visitFunc = void (*)(const T&);
 
-        /** Recursive class operations */
+        /**
+         * @brief Recursive Insertion
+         * @param value The value to insert
+         */
         void insert(const T& value);
+
+        /**
+         * @brief Recursive Search
+         * @param value The value to search for
+         */
         bool search (const T& value) const;
+
+        /**
+         * @brief Getter for Size of Binary Tree
+         * @return Integer for the size of the Binary Tree
+         */
+        const int size() const;
+
+        /** @brief Delete tree initialiser */
         void deleteTree();
 
-        void inOrderTraversal(visitFunc visit) const;       /// In-Order Wrapper
-        void preOrderTraversal(visitFunc visit) const;      /// Pre-Order Wrapper
-        void postOrderTraversal(visitFunc visit) const;     /// Post-Order Wrapper
+        /**
+         * @brief Assignment Operator for =
+         * This is for copy constructor and so that the compiler doesn't create a shallow copy
+         */
+        Bst<T>& operator=(const Bst<T>& other);
 
+
+        /**
+         * @brief In-order Traversal wrapper
+         * @param visit Function pointer
+         */
+        void inOrderTraversal(visitFunc visit) const;
+        /**
+         * @brief Pre-order Traversal wrapper
+         * @param visit Function pointer
+         */
+        void preOrderTraversal(visitFunc visit) const;
+        /**
+         * @brief Post-order Traversal wrapper
+         * @param visit Function pointer
+         */
+        void postOrderTraversal(visitFunc visit) const;
+
+    /// =============================================================================
     private:
-        /** Root node */
+        /** @brief Root node pointer */
         Node<T>* root;
+        /** @brief Node count tracker after each successful insert */
+        int nodeCount;
 
-        /** Private recursive class operations */
+        /**
+         * @brief Copy Constructor recursive helper
+         * @param node The node to add
+         */
+        Node<T>* clone(Node<T>* node);
+
+        /**
+         * @brief Insert recursive class operation
+         * @param value Value to insert
+         */
         void insertRecursive(const T& value, Node<T>*& startNode);
+        /**
+         * @brief Delete recursive class operation
+         * @param node Node to delete if not null
+         */
+        void deleteRecursive(Node<T>* node);
 
-        void inOrder(Node<T>* startNode, visitFunc visit) const;       /// Left - Node - Right (Sorted Order)
-        void preOrder(Node<T>* startNode, visitFunc visit) const;      /// Node - Left - Right (serialization, copying/saving tree structure)
-        void postOrder(Node<T>* startNode, visitFunc visit) const;     /// Left - Right - Node (Child Before Parent, safe Delete)
+        /**
+         * @brief In-order traversal
+         * @param startNode The node to compare recursively
+         * @param visit Function pointer
+         * Left - Node - Right (Sorted Order)
+         */
+        void inOrder(Node<T>* startNode, visitFunc visit) const;
+        /**
+         * @brief Pre-order traversal
+         * @param startNode The node to compare recursively
+         * @param visit Function pointer
+         * Node - Left - Right (serialization, copying/saving tree structure)
+         */
+        void preOrder(Node<T>* startNode, visitFunc visit) const;
+        /**
+         * @brief Post-order traversal
+         * @param startNode The node to compare recursively
+         * @param visit Function pointer
+         * Left - Right - Node (Child Before Parent, safe Delete)
+         */
+        void postOrder(Node<T>* startNode, visitFunc visit) const;
 };
 
 
@@ -59,8 +137,40 @@ class Bst {
 
 /** Constructor */
 template<typename T>
-Bst<T>::Bst() {
-    root = nullptr;     /// Set the initial root value to be nullptr as it hasn't been created
+Bst<T>::Bst() : root(nullptr), nodeCount(0)         /// Set the initial root and nodeCount value to be nullptr as it hasn't been created
+{
+}
+
+/** Copy Constructor */
+template<typename T>
+Bst<T>::Bst(const Bst<T>& other) {
+    root = clone(other.root);
+    nodeCount = other.nodeCount;
+}
+
+/** Copy Constructor Helper */
+template<typename T>
+Node<T>* Bst<T>::clone(Node<T>* node) {
+    if (!node) return nullptr;
+
+    Node<T>* newNode = new Node<T>;
+    newNode->data = node->data;
+    newNode->left = clone(node->left);
+    newNode->right = clone(node->right);
+    return newNode;
+}
+
+/** Copy assignment operator */
+template<typename T>
+Bst<T>& Bst<T>::operator=(const Bst<T>& other) {
+    if (this != &other) {
+        /// delete existing tree
+        deleteTree();
+        /// deep copy from other
+        root = clone(other.root);
+        nodeCount = other.nodeCount;
+    }
+    return *this;
 }
 
 /** Destructor */
@@ -70,13 +180,18 @@ Bst<T>::~Bst() {
 }
 
 
+/** Getter for Tree size */
+template<typename T>
+const int Bst<T>::size() const {
+    return nodeCount;
+}
+
 /// =================================================================================
 
 
 /** Insert */
 template<typename T>
 void Bst<T>::insert(const T& value) {
-    cout << "Inserting Value: " << value << endl;
     insertRecursive(value, root);
 }
 
@@ -95,6 +210,7 @@ void Bst<T>::insertRecursive(const T& value, Node<T>*& startNode) {
         newNode->right = nullptr;       /// Set right to nullptr
 
         startNode = newNode;            /// Set the new node
+        nodeCount++;                    /// Keep track of the number of nodes
 
         /** Value is smaller than current Node */
     } else if (value < startNode->data) {
@@ -106,7 +222,7 @@ void Bst<T>::insertRecursive(const T& value, Node<T>*& startNode) {
 
         /** Duplicate Value */
     } else {
-        cout << "Duplicated value ignored: " << value << endl;
+        /// Duplicated value is detected, will ignore
     }
 }
 
@@ -131,14 +247,31 @@ bool Bst<T>::search (const T& value) const {
     return false;       /// Not found
 }
 
+
+/// =================================================================================
+
+
 /** Delete Tree */
 template<typename T>
 void Bst<T>::deleteTree() {
-    /// requires postorder delete
+    deleteRecursive(root);
+    root = nullptr;
+    nodeCount = 0;
+}
+
+/** Post-order Deletion */
+template<typename T>
+void Bst<T>::deleteRecursive(Node<T>* node) {
+    if (!node) return;
+    deleteRecursive(node->left);
+    deleteRecursive(node->right);
+    delete node;
 }
 
 
 /// =================================================================================
+
+
 /** Public Wrapper
  * @brief In-Order Traversal Wrapper
  */

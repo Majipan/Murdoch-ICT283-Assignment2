@@ -34,7 +34,7 @@
 		</Compiler>
 		<Unit filename="AppController.cpp" />
 		<Unit filename="AppController.h" />
-		<Unit filename="BST.h" />
+		<Unit filename="Bst.h" />
 		<Unit filename="Date.cpp" />
 		<Unit filename="Date.h" />
 		<Unit filename="LoadData.cpp" />

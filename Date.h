@@ -6,31 +6,68 @@
 
 class Date{
     public:
-        /** Constructor */
+        /** @brief Constructor */
         Date();
+        /**
+         * @brief Constructor Overload
+         * @param d Integer for Day
+         * @param m Integer for Month
+         * @param y Integer for Year
+         */
         Date(int d, int m, int y);
 
-        /** Getter for day */
-        int getDay() const;
-        /** Getter for month */
-        int getMonth() const;
-        /** Getter for year */
-        int getYear() const;
+        /**
+         * @brief Getter for day
+         * @return Integer resenting Day
+         */
+        const int getDay() const;
+        /**
+         * @brief  Getter for month
+         * @return Integer resenting Month
+         */
+        const int getMonth() const;
+        /**
+         * @brief  Getter for year
+         * @return Integer resenting Year YYYY
+         */
+        const int getYear() const;
 
-        /** Setter for mark */
+        /**
+         * @brief Setter for mark
+         * @param d Integer for Day
+         */
         void setDay(int d);
-        /** Setter for mark */
+        /**
+         * @brief Setter for mark
+         * @param d Integer for Month
+         */
         void setMonth(int m);
-        /** Setter for mark */
+        /**
+         * @brief Setter for mark
+         * @param d Integer for Year YYYY
+         */
         void setYear(int y);
 
+        /**
+         * @brief Comparison operator < for ordering by (year, month, day)
+         * @param other Another Date class to make the comparison
+         */
+        bool operator<(const Date& other) const;
+        /**
+         * @brief Comparison operator == for ordering by (year, month, day)
+         * @param other Another Date class to make the comparison
+         */
+        bool operator==(const Date& other) const;
+
     private:
-        /** Day of the month */
+        /** @brief Day of the month */
         int day;
-        /** Month of the year */
+        /** @brief Month of the year */
         int month;
-        /** Year */
+        /** @brief Year */
         int year;
 };
+
+
 
 #endif

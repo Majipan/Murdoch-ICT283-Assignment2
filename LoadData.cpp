@@ -13,8 +13,8 @@ using std::stof;
 
 void LoadData::load(WeatherData& weather_data) const
 {
-    // ----------------------------------------
-    // Read data_source.txt to get the CSV path
+    /// ----------------------------------------
+    /// Read data_source.txt to get the CSV path
     ifstream fileSource("data/data_source.txt");
     if (!fileSource.is_open()) {
         cerr << "Error opening data_source.txt" << endl;
@@ -25,16 +25,16 @@ void LoadData::load(WeatherData& weather_data) const
     getline(fileSource, path);
     fileSource.close();
 
-    // ----------------------------------------
-    // Open the actual data file
+    /// ----------------------------------------
+    /// Open the actual data file
     ifstream file("data/" + path);
     if (!file.is_open()) {
         cerr << "Error opening source data file" << endl;
         return;
     }
 
-    // ----------------------------------------
-    // Read header and determine column indices
+    /// ----------------------------------------
+    /// Read header and determine column indices
     string line;
     getline(file, line);
     stringstream ssHead(line);
@@ -59,8 +59,8 @@ void LoadData::load(WeatherData& weather_data) const
         ++index;
     }
 
-    // ----------------------------------------
-    // Read data rows
+    /// ----------------------------------------
+    /// Read data rows
     while (getline(file, line)) {
         stringstream ss(line);
         string value;
@@ -84,18 +84,18 @@ void LoadData::load(WeatherData& weather_data) const
             ++index;
         }
 
-        // Skip lines with empty date/time
+        /// Skip lines with empty date/time
         if (dateTime.empty()) {
             continue;
         }
 
-        // --- Split Date/Time ---
+        /// --- Split Date/Time ---
         string dateVal, timeVal;
         stringstream dt(dateTime);
         getline(dt, dateVal, ' ');
         getline(dt, timeVal);
 
-        // --- Parse date ---
+        /// --- Parse date ---
         string dayStr, monthStr, yearStr;
         stringstream dateSS(dateVal);
         getline(dateSS, dayStr, '/');
@@ -107,7 +107,7 @@ void LoadData::load(WeatherData& weather_data) const
         int year  = std::stoi(yearStr);
         Date d(day, month, year);
 
-        // --- Parse time ---
+        /// --- Parse time ---
         string hourVal, minVal;
         stringstream timeSS(timeVal);
         getline(timeSS, hourVal, ':');
@@ -117,12 +117,12 @@ void LoadData::load(WeatherData& weather_data) const
         t.setHour(hourVal);
         t.setMins(minVal);
 
-        // --- Parse numeric values ---
+        /// --- Parse numeric values ---
         float speed   = std::stof(windSpd);
         float solar   = std::stof(solarRad);
         float ambient = std::stof(ambAir);
 
-        // --- Create WeatherType record ---
+        /// --- Create WeatherType record ---
         WeatherType record;
         record.setDate(d);
         record.setTime(t);
@@ -130,8 +130,8 @@ void LoadData::load(WeatherData& weather_data) const
         record.setSolarRad(solar);
         record.setAirTemp(ambient);
 
-        // Append to container
-        weather_data.append(record);
+        /// Insert to container
+        weather_data.insert(record);
     }
 
     file.close();

@@ -11,13 +11,23 @@
  */
 class AppController {
 public:
+    /** @brief Constructor */
     AppController();
-    void run();    /// main application loop
+
+    /** @brief Main application loop */
+    void run();
 
 private:
+    /** @brief WeatherData typedef */
     WeatherData weather_data;
+    /** @brief View Class (MVC) */
     View view;
+    /** @brief Model Class (MVC) */
     Model model;
+    /**
+     * @brief LoadData class
+     * Helps to load all the data
+     */
     LoadData loader;
 };
 

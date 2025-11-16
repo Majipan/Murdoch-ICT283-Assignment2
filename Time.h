@@ -8,17 +8,42 @@ using std::string;
 
 class Time{
     public:
-        /** Constructor */
+        /** @brief Constructor */
         Time();
-        /** Constructor Overload */
+        /**
+         * @brief Constructor Overload
+         * @param h Hours
+         * @param m Minutes
+         */
         Time(string h, string m);
-        /** Getter for Time */
+
+        /**
+         * @brief Getter for Time
+         * @return string For the Hours and Minutes HH:MM
+         */
         const string getTime() const;
 
-        /** Set Hours */
+        /**
+         * @brief Set Hours
+         * @param h Hour in HH
+         */
         void setHour(string h);
-        /** Set Minutes */
+        /**
+         * @brief Set Minutes
+         * @param m Minutes in MM
+         */
         void setMins(string m);
+
+        /**
+         * @brief Comparison operator < for ordering by (hour, minute)
+         * @param other Time class to make the comparison
+         */
+        bool operator<(const Time& other) const;
+        /**
+         * @brief Comparison operator == for ordering by (hour, minute)
+         * @param other Time class to make the comparison
+         */
+        bool operator==(const Time& other) const;
 
 
     private:
