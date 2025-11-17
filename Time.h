@@ -2,9 +2,6 @@
 #define TIME_H
 
 #include <iostream>
-#include <string>
-
-using std::string;
 
 class Time{
     public:
@@ -15,7 +12,7 @@ class Time{
          * @param h Hours
          * @param m Minutes
          */
-        Time(string h, string m);
+        Time(int h, int m);
 
         /**
          * @brief Getter for Time
@@ -24,15 +21,26 @@ class Time{
         const string getTime() const;
 
         /**
+         * @brief Get Hours
+         * @return Integer for hours not yet formatted for 2 digits
+         */
+        const int getHour() const;
+        /**
+         * @brief Get Mins
+         * @return Integer for mins not yet formatted for 2 digits
+         */
+        const int getMins() const;
+
+        /**
          * @brief Set Hours
          * @param h Hour in HH
          */
-        void setHour(string h);
+        void setHour(int h);
         /**
          * @brief Set Minutes
          * @param m Minutes in MM
          */
-        void setMins(string m);
+        void setMins(int m);
 
         /**
          * @brief Comparison operator < for ordering by (hour, minute)
@@ -47,8 +55,8 @@ class Time{
 
 
     private:
-        string hour;
-        string mins;
+        int hour;
+        int mins;
 };
 
 #endif // TIME_H

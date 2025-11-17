@@ -1,4 +1,5 @@
 #include "LoadData.h"
+#include "WeatherMap.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -113,9 +114,9 @@ void LoadData::load(WeatherData& weather_data) const
         getline(timeSS, hourVal, ':');
         getline(timeSS, minVal);
 
-        Time t;
-        t.setHour(hourVal);
-        t.setMins(minVal);
+        int hour = std::stoi(hourVal);
+        int minute = std::stoi(minVal);
+        Time t(hour, minute);
 
         /// --- Parse numeric values ---
         float speed   = std::stof(windSpd);
