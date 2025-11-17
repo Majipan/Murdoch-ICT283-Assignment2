@@ -1,20 +1,24 @@
 #include "AppController.h"
 
-/** Constructor */
+/** Constructor with member initialisers */
 AppController::AppController()
-    : weather_data(), view(), model(), loader()
+    : weather_data(), weather_map(), view(), model(), loader()
 {
 }
 
 void AppController::run()
 {
+    std::cout << "[DEBUG] AppController::run() starting\n";
     /// Load data once at start
-    loader.load(weather_data);
-
+    std::cout << "[DEBUG] Calling loader.load(...)\n";
+    loader.load(weather_data, weather_map);
+    std::cout << "[DEBUG] loader.load(...) returned\n";
+    std::cout << "[DEBUG] weather_data.size() = " << weather_data.size() << "\n";
     int input = 0;
 
     /// Menu Looping
     do {
+        std::cout << "[DEBUG] Entering menu loop, about to call view.showMenu()\n";
         /// Tells the View to show the Menu to user and listen for an input
         input = view.showMenu();
 

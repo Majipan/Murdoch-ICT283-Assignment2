@@ -25,11 +25,11 @@ const string Time::getTime() const {
 }
 
 /** Getter for Hour unformatted */
-int Time::getHour() const {
+const int Time::getHour() const {
     return hour;
 }
 /** Getter for Mins unformatted */
-int Time::getMins() const {
+const int Time::getMins() const {
     return mins;
 }
 
@@ -44,7 +44,7 @@ void Time::setMins(int m) { mins = m; }
 
 /** Operator Override for < */
 bool Time::operator<(const Time& other) const {
-    if (hour != other.hour) return h1 < h2;
+    if (hour != other.hour) return hour < other.hour;
 
     return mins < other.mins;
 }

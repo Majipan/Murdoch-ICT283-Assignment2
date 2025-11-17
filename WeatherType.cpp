@@ -1,5 +1,7 @@
 #include "WeatherType.h"
 
+/// =================================================================================
+
 /** Constructor */
 WeatherType::WeatherType() : date(), time(), speed(0), solrad(0), aatemp(0) {}
 

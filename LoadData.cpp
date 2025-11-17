@@ -11,9 +11,25 @@ using std::getline;
 using std::cerr;
 using std::endl;
 using std::stof;
+using std::cout;
 
-void LoadData::load(WeatherData& weather_data) const
+/// =================================================================================
+
+/** Constructor */
+void LoadData::load(WeatherData& weather_data) const{
+    loadImpl(weather_data, nullptr);
+}
+
+/** Constructor Overload with std::map */
+void LoadData::load(WeatherData& weather_data, WeatherMap& weather_map) const{
+    loadImpl(weather_data, &weather_map);
+}
+
+/// =================================================================================
+
+void LoadData::loadImpl(WeatherData& weather_data, WeatherMap* weather_map) const
 {
+    std::cout << "[DEBUG] LoadData::loadImpl() starting\n";
     /// ----------------------------------------
     /// Read data_source.txt to get the CSV path
     ifstream fileSource("data/data_source.txt");
@@ -22,118 +38,152 @@ void LoadData::load(WeatherData& weather_data) const
         return;
     }
 
+
     string path;
-    getline(fileSource, path);
-    fileSource.close();
-
-    /// ----------------------------------------
-    /// Open the actual data file
-    ifstream file("data/" + path);
-    if (!file.is_open()) {
-        cerr << "Error opening source data file" << endl;
-        return;
-    }
-
-    /// ----------------------------------------
-    /// Read header and determine column indices
-    string line;
-    getline(file, line);
-    stringstream ssHead(line);
-    string header;
-    int index = 0;
-
-    int dtIndex  = 0;
-    int spdIndex = 0;
-    int radIndex = 0;
-    int airIndex = 0;
-
-    while (getline(ssHead, header, ',')) {
-        if (header == "WAST") {
-            dtIndex = index;
-        } else if (header == "S") {
-            spdIndex = index;
-        } else if (header == "SR") {
-            radIndex = index;
-        } else if (header == "T") {
-            airIndex = index;
+    while (getline(fileSource, path)) {
+        if (path.empty()) {
+            continue;
         }
-        ++index;
-    }
+        std::cout << "[DEBUG] Opening data file: data/" << path << "\n";
+        /// ----------------------------------------
+        /// Open each data file listed in data_source.txt
+        ifstream file("data/" + path);
+        if (!file.is_open()) {
+            cerr << "Error opening source data file: " << path << endl;
+            std::cout << "[DEBUG] File " << path << " is empty, skipping\n";
+            continue;   // try next file
+        }
 
-    /// ----------------------------------------
-    /// Read data rows
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string value;
-        index = 0;
+        /// ----------------------------------------
+        /// Read header and determine column indices
+        string line;
+        if (!getline(file, line)) {
+            cout << "[WARN] File " << path << " is empty, skipping\n";
+            file.close();
+            continue;   /// empty file
+        }
 
-        string dateTime;
-        string windSpd;
-        string solarRad;
-        string ambAir;
+        stringstream ssHead(line);
+        string header;
+        int index = 0;
 
-        while (getline(ss, value, ',')) {
-            if (index == dtIndex)
-                dateTime = value;
-            else if (index == spdIndex)
-                windSpd = value;
-            else if (index == radIndex)
-                solarRad = value;
-            else if (index == airIndex)
-                ambAir = value;
+        int dtIndex  = -1;
+        int spdIndex = -1;
+        int radIndex = -1;
+        int airIndex = -1;
 
+        while (getline(ssHead, header, ',')) {
+            if (header == "WAST") {
+                dtIndex = index;
+            } else if (header == "S") {
+                spdIndex = index;
+            } else if (header == "SR") {
+                radIndex = index;
+            } else if (header == "T") {
+                airIndex = index;
+            }
             ++index;
         }
 
-        /// Skip lines with empty date/time
-        if (dateTime.empty()) {
+        /// Basic safety check
+        if (dtIndex < 0 || spdIndex < 0 || radIndex < 0 || airIndex < 0) {
+            cerr << "Required columns not found in file: " << path << endl;
+            file.close();
             continue;
         }
 
-        /// --- Split Date/Time ---
-        string dateVal, timeVal;
-        stringstream dt(dateTime);
-        getline(dt, dateVal, ' ');
-        getline(dt, timeVal);
+        /// ----------------------------------------
+        /// Read data rows
+        while (getline(file, line)) {
+            try{
+            stringstream ss(line);
+            string value;
+            index = 0;
 
-        /// --- Parse date ---
-        string dayStr, monthStr, yearStr;
-        stringstream dateSS(dateVal);
-        getline(dateSS, dayStr, '/');
-        getline(dateSS, monthStr, '/');
-        getline(dateSS, yearStr);
+            string dateTime;
+            string windSpd;
+            string solarRad;
+            string ambAir;
 
-        int day   = std::stoi(dayStr);
-        int month = std::stoi(monthStr);
-        int year  = std::stoi(yearStr);
-        Date d(day, month, year);
+            while (getline(ss, value, ',')) {
+                if (index == dtIndex) {
+                    dateTime = value;
+                } else if (index == spdIndex) {
+                    windSpd = value;
+                } else if (index == radIndex) {
+                    solarRad = value;
+                } else if (index == airIndex) {
+                    ambAir = value;
+                }
+                ++index;
+            }
 
-        /// --- Parse time ---
-        string hourVal, minVal;
-        stringstream timeSS(timeVal);
-        getline(timeSS, hourVal, ':');
-        getline(timeSS, minVal);
+            /// Skip lines with empty date/time
+            if (dateTime.empty()) {
+                continue;
+            }
 
-        int hour = std::stoi(hourVal);
-        int minute = std::stoi(minVal);
-        Time t(hour, minute);
+            /// --- Split Date/Time ---
+            string dateVal, timeVal;
+            stringstream dt(dateTime);
+            getline(dt, dateVal, ' ');
+            getline(dt, timeVal);
 
-        /// --- Parse numeric values ---
-        float speed   = std::stof(windSpd);
-        float solar   = std::stof(solarRad);
-        float ambient = std::stof(ambAir);
+            /// --- Parse date ---
+            string dayStr, monthStr, yearStr;
+            stringstream dateSS(dateVal);
+            getline(dateSS, dayStr, '/');
+            getline(dateSS, monthStr, '/');
+            getline(dateSS, yearStr);
 
-        /// --- Create WeatherType record ---
-        WeatherType record;
-        record.setDate(d);
-        record.setTime(t);
-        record.setSpeed(speed);
-        record.setSolarRad(solar);
-        record.setAirTemp(ambient);
+            int day   = std::stoi(dayStr);
+            int month = std::stoi(monthStr);
+            int year  = std::stoi(yearStr);
+            Date d(day, month, year);
 
-        /// Insert to container
-        weather_data.insert(record);
+            /// --- Parse time ---
+            string hourStr, minStr;
+            stringstream timeSS(timeVal);
+            getline(timeSS, hourStr, ':');
+            getline(timeSS, minStr);
+
+            int hour   = std::stoi(hourStr);
+            int minute = std::stoi(minStr);
+
+            Time t(hour, minute);   /// uses new int-based Time
+
+            /// --- Parse numeric values ---
+            float speed   = std::stof(windSpd);
+            float solar   = std::stof(solarRad);
+            float ambient = std::stof(ambAir);
+
+            /// --- Create WeatherType record ---
+            WeatherType record;
+            record.setDate(d);
+            record.setTime(t);
+            record.setSpeed(speed);
+            record.setSolarRad(solar);
+            record.setAirTemp(ambient);
+
+            /// Insert into main container (BST or Vector, via WeatherData typedef)
+            weather_data.insert(record);
+
+            /// Optionally build std::map index depending if its sent as a parameter
+            if (weather_map) {
+                WeatherKey key = makeWeatherKey(record);
+                (*weather_map)[key] = record;
+            }
+
+        }
+        catch (const std::exception& ex) {
+            std::cerr << "[WARN] Skipping bad row in " << path
+                      << " due to parse error: " << ex.what() << "\n";
+            // continue to next line
+        }}
+
+        file.close();
+        std::cout << "[DEBUG] Finished file: " << path << "\n";
     }
 
-    file.close();
+    fileSource.close();
 }

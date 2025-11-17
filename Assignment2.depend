@@ -136,11 +136,12 @@
 	"View.h"
 	<iostream>
 
-1763116150 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\appcontroller.cpp
+1763365995 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\appcontroller.cpp
 	"AppController.h"
 
-1763181501 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\appcontroller.h
+1763365567 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\appcontroller.h
 	"WeatherData.h"
+	"WeatherMap.h"
 	"View.h"
 	"Model.h"
 	"LoadData.h"
@@ -150,57 +151,61 @@
 	"Time.h"
 	"Vector.h"
 
-1763087240 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\date.h
+1763334181 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\date.h
 	<iostream>
 	<string>
 
-1760188669 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\time.h
-	<iostream>
+1763360247 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\time.h
 	<string>
+	<iostream>
 
 1763139661 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\vector.h
 	<cassert>
 
-1763086294 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\view.h
+1763359772 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\view.h
 	<string>
 
 1763181418 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\model.h
 	<string>
 	"WeatherData.h"
 
-1763181459 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\loaddata.h
+1763359467 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\loaddata.h
 	"WeatherData.h"
+	"WeatherMap.h"
 
-1763087238 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\date.cpp
+1763333170 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\date.cpp
 	"date.h"
 	<iostream>
 
-1763095279 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\loaddata.cpp
+1763368404 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\loaddata.cpp
 	"LoadData.h"
+	"WeatherMap.h"
 	<fstream>
 	<sstream>
 	<iostream>
 
-1763113776 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\main.cpp
+1763364242 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\main.cpp
 	<windows.h>
 	"AppController.h"
 
-1763113675 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\model.cpp
+1763181431 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\model.cpp
 	"Model.h"
 	<sstream>
 	<cmath>
 	<fstream>
 
-1760188669 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\time.cpp
+1763360262 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\time.cpp
 	"Time.h"
 	<iostream>
+	<sstream>
+	<iomanip>
 	<string>
 
-1763181387 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\weatherdata.h
-	"Vector.h"
+1763328807 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\weatherdata.h
+	"Bst.h"
 	"WeatherType.h"
 
-1763180274 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\weathertype.h
+1763359520 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\weathertype.h
 	"Date.h"
 	"Time.h"
 
@@ -208,6 +213,20 @@
 	"View.h"
 	<iostream>
 
-1763180285 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\weathertype.cpp
+1763359927 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\weathertype.cpp
 	"WeatherType.h"
+
+1763361424 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\bst.h
+	<cassert>
+	<iostream>
+
+1763341619 d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\weathermap.h
+	<map>
+	<string>
+	"WeatherType.h"
+
+1763341733 source:d:\03 murdoch\term 2\ict 283 (data structures and abstractions)\assignment2 - submission\weathermap.cpp
+	"WeatherMap.h"
+	<sstream>
+	<iomanip>
 

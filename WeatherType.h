@@ -14,11 +14,11 @@ public:
     WeatherType();
     /**
      * @brief Constructor Overload
-     * @param d Date Class
-     * @param t Time Class
-     * @param spd Speed value
-     * @param rad Radiation Value
-     * @param air Air Temperature
+     * @param d     Date Class
+     * @param t     Time Class
+     * @param spd   Speed value
+     * @param rad   Radiation Value
+     * @param air   Air Temperature
      */
     WeatherType(const Date& d, const Time& t, float spd, float rad, float air);
 
@@ -89,15 +89,15 @@ private:
 
 /**
  * @brief Comparison operators < ordering WeatherType by Date+Time
- * @param lhs First WeatherType for comparison
- * @param rhs Second WeatherType for comparison
+ * @param lhs   First WeatherType for comparison
+ * @param rhs   Second WeatherType for comparison
  * @return bool True/False result of the comparison
  */
 bool operator<(const WeatherType& lhs, const WeatherType& rhs);
 /**
  * @brief Comparison operators == ordering WeatherType by Date+Time
- * @param lhs First WeatherType for comparison
- * @param rhs Second WeatherType for comparison
+ * @param lhs   First WeatherType for comparison
+ * @param rhs   Second WeatherType for comparison
  * @return bool True/False result of the comparison
  */
 bool operator==(const WeatherType& lhs, const WeatherType& rhs);

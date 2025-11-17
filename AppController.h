@@ -2,6 +2,7 @@
 #define APP_CONTROLLER_H
 
 #include "WeatherData.h"
+#include "WeatherMap.h"
 #include "View.h"
 #include "Model.h"
 #include "LoadData.h"
@@ -20,6 +21,8 @@ public:
 private:
     /** @brief WeatherData typedef */
     WeatherData weather_data;
+    /** @brief WeatherMap typedef */
+    WeatherMap weather_map;
     /** @brief View Class (MVC) */
     View view;
     /** @brief Model Class (MVC) */

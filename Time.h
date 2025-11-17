@@ -1,6 +1,7 @@
 #ifndef TIME_H
 #define TIME_H
 
+#include <string>
 #include <iostream>
 
 class Time{
@@ -18,7 +19,7 @@ class Time{
          * @brief Getter for Time
          * @return string For the Hours and Minutes HH:MM
          */
-        const string getTime() const;
+        const std::string getTime() const;
 
         /**
          * @brief Get Hours

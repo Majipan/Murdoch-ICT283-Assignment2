@@ -1,5 +1,6 @@
 #ifndef Bst_H
 #define Bst_H
+#include <cassert>
 #include <iostream>
 
 using std::cout;
@@ -67,6 +68,11 @@ class Bst {
          */
         Bst<T>& operator=(const Bst<T>& other);
 
+        /**
+         * @brief Access element by index (In-order ONLY)
+         * @param index The index of the node in in-order traversal
+         */
+        const T& operator[](int index) const;
 
         /**
          * @brief In-order Traversal wrapper
@@ -85,6 +91,7 @@ class Bst {
         void postOrderTraversal(visitFunc visit) const;
 
     /// =============================================================================
+
     private:
         /** @brief Root node pointer */
         Node<T>* root;
@@ -109,23 +116,32 @@ class Bst {
         void deleteRecursive(Node<T>* node);
 
         /**
+         * @brief Helper to retrieve the node at a given in-order index
+         * @param node          Current node in traversal
+         * @param currentIndex  Traversal counter, incremented as we visit nodes
+         * @param targetIndex   Index we are searching for
+         * @return Pointer to the node at targetIndex, or nullptr if not found
+         */
+        Node<T>* getAtIndex(Node<T>* node, int& currentIndex, int targetIndex) const;
+
+        /**
          * @brief In-order traversal
-         * @param startNode The node to compare recursively
-         * @param visit Function pointer
+         * @param startNode     The node to compare recursively
+         * @param visit         Function pointer
          * Left - Node - Right (Sorted Order)
          */
         void inOrder(Node<T>* startNode, visitFunc visit) const;
         /**
          * @brief Pre-order traversal
-         * @param startNode The node to compare recursively
-         * @param visit Function pointer
+         * @param startNode     The node to compare recursively
+         * @param visit         Function pointer
          * Node - Left - Right (serialization, copying/saving tree structure)
          */
         void preOrder(Node<T>* startNode, visitFunc visit) const;
         /**
          * @brief Post-order traversal
-         * @param startNode The node to compare recursively
-         * @param visit Function pointer
+         * @param startNode     The node to compare recursively
+         * @param visit         Function pointer
          * Left - Right - Node (Child Before Parent, safe Delete)
          */
         void postOrder(Node<T>* startNode, visitFunc visit) const;
@@ -188,6 +204,44 @@ const int Bst<T>::size() const {
 
 /// =================================================================================
 
+/** Access element by in-order index */
+template<typename T>
+const T& Bst<T>::operator[](int index) const {
+    assert(index >= 0 && index < nodeCount && "Bst index out of range");
+
+    int currentIndex = 0;
+    Node<T>* result = getAtIndex(root, currentIndex, index);
+
+    /// result should never be nullptr if assert above passes
+    assert(result != nullptr && "Bst getAtIndex returned nullptr");
+
+    return result->data;
+}
+
+/** Helper to find node recursively based on in-order index */
+template<typename T>
+Node<T>* Bst<T>::getAtIndex(Node<T>* node, int& currentIndex, int targetIndex) const {
+    if (!node) {
+        return nullptr;
+    }
+
+    /// Traverse left subtree
+    Node<T>* leftResult = getAtIndex(node->left, currentIndex, targetIndex);
+    if (leftResult) {
+        return leftResult;
+    }
+
+    /// Visit current node
+    if (currentIndex == targetIndex) {
+        return node;
+    }
+    ++currentIndex;
+
+    /// Traverse right subtree
+    return getAtIndex(node->right, currentIndex, targetIndex);
+}
+
+/// =================================================================================
 
 /** Insert */
 template<typename T>
@@ -216,8 +270,8 @@ void Bst<T>::insertRecursive(const T& value, Node<T>*& startNode) {
     } else if (value < startNode->data) {
         insertRecursive(value, startNode->left);
 
-        /** Value is bigger than current Node */
-    } else if (value > startNode->data) {
+        /** Current Node is bigger than Value */
+    } else if (startNode->data < value) {
         insertRecursive(value, startNode->right);
 
         /** Duplicate Value */
