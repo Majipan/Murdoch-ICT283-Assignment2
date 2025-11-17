@@ -8,13 +8,8 @@
 class LoadData {
     public:
         /**
-         * @brief Load wind records into the given container
-         * @param weather_data  The container for all weather data
-         */
-        void load(WeatherData& weather_data) const;
-        /**
-         * @brief Load wind records into the given container
-         * Function Overload
+         * @brief Constructor function
+         * Loads wind records into the given container
          * @param weather_data  The container for all weather data
          * @param weather_map   The map for weather_data when using Bst
          */

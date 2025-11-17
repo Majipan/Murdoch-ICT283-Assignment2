@@ -106,6 +106,9 @@ class Bst {
 
         /**
          * @brief Insert recursive class operation
+         * Insert recursive is a standard function of a Binary tree, however it is not being used in Assignment 2.
+         * The reason is because it could cause a stackover flow if sorted by Date as the data source is already sorted causing an inbalanced tree.
+         * It has been deemed more suitable to use iterative insertion, but a copy of this function will be kept here as proof of concept just in case it is deemed mandatory in a minimal BST.
          * @param value Value to insert
          */
         void insertRecursive(const T& value, Node<T>*& startNode);
@@ -246,10 +249,63 @@ Node<T>* Bst<T>::getAtIndex(Node<T>* node, int& currentIndex, int targetIndex) c
 /** Insert */
 template<typename T>
 void Bst<T>::insert(const T& value) {
-    insertRecursive(value, root);
+
+    /// If tree is empty, create root
+    if (root == nullptr) {
+        Node<T>* newNode = new Node<T>;
+        newNode->data  = value;
+        newNode->left  = nullptr;
+        newNode->right = nullptr;
+        root = newNode;
+        ++nodeCount;
+        return;
+    }
+
+    Node<T>* current = root;
+
+    /// Traverse the tree until an available slot is found
+    while (true) {
+
+        /// Go left
+        if (value < current->data) {
+            if (current->left == nullptr) {
+                Node<T>* newNode = new Node<T>;
+                newNode->data  = value;
+                newNode->left  = nullptr;
+                newNode->right = nullptr;
+                current->left  = newNode;
+                ++nodeCount;
+                return;
+            } else {
+                current = current->left;
+            }
+
+        /// Go right
+        } else if (current->data < value) {
+
+            if (current->right == nullptr) {
+                Node<T>* newNode = new Node<T>;
+                newNode->data   = value;
+                newNode->left   = nullptr;
+                newNode->right  = nullptr;
+                current->right  = newNode;
+                ++nodeCount;
+                return;
+            } else {
+                current = current->right;
+            }
+        } else {
+            /// Duplicate value, ignore
+            return;
+        }
+    }
 }
 
-/** Insert Recursively */
+/**
+ * Insert Recursively
+ * Not being used at the moment, but kept as proof of concept
+ * Otherwise, this can be activated by adding insertRecursive(value, root); to Bst<T>::insert
+ */
 template<typename T>
 void Bst<T>::insertRecursive(const T& value, Node<T>*& startNode) {
 

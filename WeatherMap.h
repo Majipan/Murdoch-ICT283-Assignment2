@@ -3,27 +3,45 @@
 
 #include <map>
 #include <string>
+#include <vector>
 #include "WeatherType.h"
 
 /** There is only Declarations in this file, all the logic is in the .cpp file */
 
 /**
- * @brief Key type for weather records in the std::map
- * Textual key will be used, made from Date + Time. Format: "2010-01-01 13:20"
+ * @brief A struct to contain Date & Time
+ * An operator override to compare Date & Time
  */
-using WeatherKey = std::string;
+struct WeatherKey {
+    int year;
+    int month;
+
+    /// Compare by year then month
+    bool operator<(const WeatherKey& other) const;
+};
+
+/**
+ * @brief Holds all the raw data for one row
+ */
+struct WeatherMonthlyStats {
+    std::vector<float> speeds;
+    std::vector<float> temps;
+    std::vector<float> solars;
+};
 
 /**
  * @brief Map from Date+Time key to full WeatherType record
  * Option A: WeatherType is the map *value*, not the key
  */
-using WeatherMap = std::map<WeatherKey, WeatherType>;
+using WeatherMap = std::map<WeatherKey, WeatherMonthlyStats>;
 
 /**
  * @brief Helper to build a key from a WeatherType record
  * Format: YYYY-MM-DD HH:MM , this has to be trimmed for whitespace
+ * This helps to easily generate the key when attempting to insert
  * @param rec A single WeatherType record
  */
 WeatherKey makeWeatherKey(const WeatherType& rec);
+
 
 #endif
