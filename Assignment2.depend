@@ -230,3 +230,82 @@
 	<sstream>
 	<iomanip>
 
+1763372442 source:c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\appcontroller.cpp
+	"AppController.h"
+
+1763372442 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\appcontroller.h
+	"WeatherData.h"
+	"WeatherMap.h"
+	"View.h"
+	"Model.h"
+	"LoadData.h"
+
+1763372442 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\weatherdata.h
+	"Bst.h"
+	"WeatherType.h"
+
+1763372442 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\bst.h
+	<cassert>
+	<iostream>
+
+1763372442 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\weathertype.h
+	"Date.h"
+	"Time.h"
+
+1763372442 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\date.h
+	<iostream>
+	<string>
+
+1763372442 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\time.h
+	<string>
+	<iostream>
+
+1763372442 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\weathermap.h
+	<map>
+	<string>
+	"WeatherType.h"
+
+1763372442 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\view.h
+	<string>
+
+1763184348 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\model.h
+	<string>
+	"WeatherData.h"
+
+1763372442 c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\loaddata.h
+	"WeatherData.h"
+	"WeatherMap.h"
+
+1763372442 source:c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\date.cpp
+	"date.h"
+	<iostream>
+
+1763372442 source:c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\main.cpp
+	<windows.h>
+	"AppController.h"
+
+1763184348 source:c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\model.cpp
+	"Model.h"
+	<sstream>
+	<cmath>
+	<fstream>
+
+1763372442 source:c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\time.cpp
+	"Time.h"
+	<iostream>
+	<sstream>
+	<iomanip>
+	<string>
+
+1763184348 source:c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\view.cpp
+	"View.h"
+	<iostream>
+
+1763372442 source:c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\weathermap.cpp
+	"WeatherMap.h"
+	<sstream>
+	<iomanip>
+
+1763372442 source:c:\1 murdoch\term 2\ict 283 (data structures and abstractions)\murdoch-ict283-assignment2\weathertype.cpp
+	"WeatherType.h"
+

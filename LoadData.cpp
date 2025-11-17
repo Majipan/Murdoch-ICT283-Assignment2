@@ -38,9 +38,10 @@ void LoadData::loadImpl(WeatherData& weather_data, WeatherMap* weather_map) cons
         return;
     }
 
-
+    int lineNumber = 1; /// remove later @@@@@@@@@@@
     string path;
     while (getline(fileSource, path)) {
+        ++lineNumber; /// remove later @@@@@@@@@@@
         if (path.empty()) {
             continue;
         }
@@ -120,6 +121,8 @@ void LoadData::loadImpl(WeatherData& weather_data, WeatherMap* weather_map) cons
 
             /// Skip lines with empty date/time
             if (dateTime.empty()) {
+                std::cout << "[WARN] Empty dateTime at " << path
+                    << ":" << lineNumber << ", skipping row\n";
                 continue;
             }
 
@@ -149,8 +152,16 @@ void LoadData::loadImpl(WeatherData& weather_data, WeatherMap* weather_map) cons
 
             int hour   = std::stoi(hourStr);
             int minute = std::stoi(minStr);
+            Time t(hour, minute);
 
-            Time t(hour, minute);   /// uses new int-based Time
+            if (windSpd.empty() || solarRad.empty() || ambAir.empty()) {
+                std::cerr << "[WARN] Missing numeric field at "
+                          << path << ":" << lineNumber
+                          << " [S='" << windSpd
+                          << "', SR='" << solarRad
+                          << "', T='" << ambAir << "'], skipping row\n";
+                continue;
+            }
 
             /// --- Parse numeric values ---
             float speed   = std::stof(windSpd);
@@ -176,9 +187,10 @@ void LoadData::loadImpl(WeatherData& weather_data, WeatherMap* weather_map) cons
 
         }
         catch (const std::exception& ex) {
-            std::cerr << "[WARN] Skipping bad row in " << path
-                      << " due to parse error: " << ex.what() << "\n";
-            // continue to next line
+        std::cerr << "[WARN] Skipping bad row in " << path
+                  << " at line " << lineNumber
+                  << " due to parse error: " << ex.what()
+                  << " | raw line: " << line << "\n";
         }}
 
         file.close();
