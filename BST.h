@@ -42,7 +42,7 @@ class Bst {
         using visitFunc = void (*)(const T&);
 
         /**
-         * @brief Recursive Insertion
+         * @brief Recursive Insertion Wrapper
          * @param value The value to insert
          */
         void insert(const T& value);
@@ -249,56 +249,7 @@ Node<T>* Bst<T>::getAtIndex(Node<T>* node, int& currentIndex, int targetIndex) c
 /** Insert */
 template<typename T>
 void Bst<T>::insert(const T& value) {
-
-    /// If tree is empty, create root
-    if (root == nullptr) {
-        Node<T>* newNode = new Node<T>;
-        newNode->data  = value;
-        newNode->left  = nullptr;
-        newNode->right = nullptr;
-        root = newNode;
-        ++nodeCount;
-        return;
-    }
-
-    Node<T>* current = root;
-
-    /// Traverse the tree until an available slot is found
-    while (true) {
-
-        /// Go left
-        if (value < current->data) {
-            if (current->left == nullptr) {
-                Node<T>* newNode = new Node<T>;
-                newNode->data  = value;
-                newNode->left  = nullptr;
-                newNode->right = nullptr;
-                current->left  = newNode;
-                ++nodeCount;
-                return;
-            } else {
-                current = current->left;
-            }
-
-        /// Go right
-        } else if (current->data < value) {
-
-            if (current->right == nullptr) {
-                Node<T>* newNode = new Node<T>;
-                newNode->data   = value;
-                newNode->left   = nullptr;
-                newNode->right  = nullptr;
-                current->right  = newNode;
-                ++nodeCount;
-                return;
-            } else {
-                current = current->right;
-            }
-        } else {
-            /// Duplicate value, ignore
-            return;
-        }
-    }
+    insertRecursive(value, root);
 }
 
 /**

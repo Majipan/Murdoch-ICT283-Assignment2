@@ -11,6 +11,3 @@ The relationship between AppController and Model is such that weather_data will 
 
 -
 During Loading of the data, Bst will currently ignore any duplicated rows that have similar Date & Time and only the earliest row will be inserted. I am choosing to do this because its the most convenient way to address duplicated records. It is POSSIBLE to write a logic to perhaps average the data and I am well aware of other methods, however as there isn't an explicit way mentioned to handle this, I have chosen to use the most convenient method.
-
--
-In Bst.h, I was initially using a recursive insertion method but it ran into stack overflow error due to the comparison value being date & time. Date & time is already sorted in the csv dataset causing the tree to be skewed leading to stack overflow. I have deemed that using iterative insertion will perform just as well. One other alternative is to apply a self-balancing tree logic. I have kept the recursive insertion function there as a proof of concept as I am worried it might be deemed as a mandatory convention to have a recursive insertion in a minimal Binary Search Tree.

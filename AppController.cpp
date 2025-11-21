@@ -1,8 +1,14 @@
 #include "AppController.h"
 
-/** Constructor with member initialisers */
+/** Constructor */
 AppController::AppController()
-    : weather_data(), weather_map(), view(), model(), loader()
+    : weather_map(),
+      speedTree(),
+      tempTree(),
+      solarTree(),
+      view(),
+      loader(),
+      model(weather_map, speedTree, tempTree, solarTree)
 {
 }
 
@@ -11,9 +17,8 @@ void AppController::run()
     std::cout << "[DEBUG] AppController::run() starting\n";
     /// Load data once at start
     std::cout << "[DEBUG] Calling loader.load(...)\n";
-    loader.load(weather_data, weather_map);
+    loader.load(weather_map, speedTree, tempTree, solarTree);
     std::cout << "[DEBUG] loader.load(...) returned\n";
-    std::cout << "[DEBUG] weather_data.size() = " << weather_data.size() << "\n";
     int input = 0;
 
     /// Menu Looping
@@ -36,19 +41,19 @@ void AppController::run()
         /**  Based on the inputs, handle the menu options through Model and have view display the message */
         switch (input) {
         case 1:
-            view.showMessage(model.handleOption1(weather_data, month, year));
+            view.showMessage(model.handleOption1(weather_map, month, year));
             break;
 
         case 2:
-            view.showMessage(model.handleOption2(weather_data, year));
+            view.showMessage(model.handleOption2(weather_map, year));
             break;
 
         case 3:
-            view.showMessage(model.handleOption3(weather_data, year));
+            view.showMessage(model.handleOption3(weather_map, month));
             break;
 
         case 4:
-            view.showMessage(model.handleOption4(weather_data, year));
+            view.showMessage(model.handleOption4(weather_map, year));
             break;
 
         case 5:

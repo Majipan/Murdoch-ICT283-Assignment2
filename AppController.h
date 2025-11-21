@@ -1,7 +1,6 @@
 #ifndef APP_CONTROLLER_H
 #define APP_CONTROLLER_H
 
-#include "WeatherData.h"
 #include "WeatherMap.h"
 #include "View.h"
 #include "Model.h"
@@ -12,24 +11,32 @@
  */
 class AppController {
 public:
-    /** @brief Constructor */
+    /**
+     * @brief Constructor
+     * Members initialiser to start storing data in these containers
+     */
     AppController();
 
     /** @brief Main application loop */
     void run();
 
 private:
-    /** @brief WeatherData typedef */
-    WeatherData weather_data;
     /** @brief WeatherMap typedef */
     WeatherMap weather_map;
+    /** @brief speedTree typedef */
+    SpeedTree speedTree;
+    /** @brief TempTree typedef */
+    TempTree tempTree;
+    /** @brief SolarTree typedef */
+    SolarTree solarTree;
+
     /** @brief View Class (MVC) */
     View view;
     /** @brief Model Class (MVC) */
     Model model;
     /**
      * @brief LoadData class
-     * Helps to load all the data
+     * Helps to load all the data from file
      */
     LoadData loader;
 };

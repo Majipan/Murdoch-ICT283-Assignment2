@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include <vector>
+#include "Vector.h"
 #include "WeatherType.h"
 
 /** There is only Declarations in this file, all the logic is in the .cpp file */
@@ -24,9 +24,9 @@ struct WeatherKey {
  * @brief Holds all the raw data for one row
  */
 struct WeatherMonthlyStats {
-    std::vector<float> speeds;
-    std::vector<float> temps;
-    std::vector<float> solars;
+    Vector<float> speeds;
+    Vector<float> temps;
+    Vector<float> solars;
 };
 
 /**

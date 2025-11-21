@@ -46,6 +46,7 @@
 		<Unit filename="Vector.h" />
 		<Unit filename="View.cpp" />
 		<Unit filename="View.h" />
+		<Unit filename="WeatherData.cpp" />
 		<Unit filename="WeatherData.h" />
 		<Unit filename="WeatherMap.cpp" />
 		<Unit filename="WeatherMap.h" />

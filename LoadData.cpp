@@ -1,5 +1,6 @@
 #include "LoadData.h"
 #include "WeatherMap.h"
+#include "WeatherData.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -16,13 +17,14 @@ using std::cout;
 /// =================================================================================
 
 /** Constructor */
-void LoadData::load(WeatherData& weather_data, WeatherMap& weather_map) const{
-    loadImpl(weather_data, &weather_map);
+void LoadData::load(WeatherMap& weather_map, SpeedTree& speedTree, TempTree& tempTree, SolarTree& solarTree) const
+{
+    loadImpl(&weather_map, &speedTree, &tempTree, &solarTree);
 }
 
 /// =================================================================================
 
-void LoadData::loadImpl(WeatherData& weather_data, WeatherMap* weather_map) const
+void LoadData::loadImpl(WeatherMap* weather_map, SpeedTree* speedTree, TempTree* tempTree, SolarTree* solarTree) const
 {
     std::cout << "[DEBUG] LoadData::loadImpl() starting\n";         /// remove later @@@@@@@@@@@
     /// ----------------------------------------
@@ -92,99 +94,124 @@ void LoadData::loadImpl(WeatherData& weather_data, WeatherMap* weather_map) cons
         /// Read data rows
         while (getline(file, line)) {
             try{                                                    /// remove later @@@@@@@@@@@
-            stringstream ss(line);
-            string value;
-            index = 0;
+            if (line.empty()) continue;
 
-            string dateTime;
-            string windSpd;
-            string solarRad;
-            string ambAir;
+                /// --- Split the CSV row into columns ---
+                stringstream ss(line);
+                string token;
+                int col = 0;
 
-            while (getline(ss, value, ',')) {
-                if (index == dtIndex) {
-                    dateTime = value;
-                } else if (index == spdIndex) {
-                    windSpd = value;
-                } else if (index == radIndex) {
-                    solarRad = value;
-                } else if (index == airIndex) {
-                    ambAir = value;
+                string dateTime;
+                string windSpd;
+                string solarRad;
+                string ambAir;
+
+                while (getline(ss, token, ',')) {
+                    if (col == dtIndex) {
+                        dateTime = token;
+                    } else if (col == spdIndex) {
+                        windSpd = token;
+                    } else if (col == radIndex) {
+                        solarRad = token;
+                    } else if (col == airIndex) {
+                        ambAir = token;
+                    }
+                    ++col;
                 }
-                ++index;
+
+                /// Skip rows with missing or N/A values
+                if (dateTime.empty() ||
+                    windSpd == "N/A" ||
+                    solarRad == "N/A" ||
+                    ambAir == "N/A") {
+                    continue;
+                }
+
+                /// --- Parse date and time from dateTime ---
+                /// Example format: "8/02/2010 9:00"
+                string datePart, timePart;
+                {
+                    stringstream dt(dateTime);
+                    getline(dt, datePart, ' ');
+                    getline(dt, timePart);
+                }
+
+                int day = 0, month = 0, year = 0;
+                {
+                    stringstream ds(datePart);
+                    string dTok, mTok, yTok;
+                    getline(ds, dTok, '/');
+                    getline(ds, mTok, '/');
+                    getline(ds, yTok, '/');
+
+                    day   = std::stoi(dTok);
+                    month = std::stoi(mTok);
+                    year  = std::stoi(yTok);
+                }
+
+                int hour = 0, minute = 0;
+                {
+                    stringstream ts(timePart);
+                    string hTok, mTok;
+                    getline(ts, hTok, ':');
+                    getline(ts, mTok, ':');
+
+                    hour   = std::stoi(hTok);
+                    minute = std::stoi(mTok);
+                }
+
+                Date d(day, month, year);
+                Time t(hour, minute);
+
+                /// --- Parse numeric values ---
+                float speed   = std::stof(windSpd);
+                float solar   = std::stof(solarRad);
+                float ambient = std::stof(ambAir);
+
+                /// --- Insert into metric BSTs ---
+                if (speedTree) {
+                    SpeedRecord srec;
+                    srec.date  = d;
+                    srec.time  = t;
+                    srec.speed = speed;
+                    speedTree->insert(srec);   /// recursive insert sorted by speed
+                }
+
+                if (tempTree) {
+                    TempRecord trec;
+                    trec.date = d;
+                    trec.time = t;
+                    trec.temp = ambient;
+                    tempTree->insert(trec);    /// sorted by temp
+                }
+
+                if (solarTree) {
+                    SolarRecord rrec;
+                    rrec.date  = d;
+                    rrec.time  = t;
+                    rrec.solar = solar;
+                    solarTree->insert(rrec);   /// sorted by solar
+                }
+
+                /// --- Insert into WeatherMap (grouped by year/month) ---
+
+                if (weather_map) {
+                    /// Either use WeatherType + makeWeatherKey(record),
+                    /// OR build key directly from d.getYear()/getMonth()
+                    WeatherType rec;
+                    rec.setDate(d);
+                    rec.setTime(t);
+                    rec.setSpeed(speed);
+                    rec.setSolarRad(solar);
+                    rec.setAirTemp(ambient);
+
+                    WeatherKey key = makeWeatherKey(rec);
+                    WeatherMonthlyStats& stats = (*weather_map)[key];
+                    stats.speeds.insert(speed);
+                    stats.temps.insert(ambient);
+                    stats.solars.insert(solar);
+                }
             }
-
-            /// Skip lines with empty date/time
-            if (dateTime.empty()) {
-                std::cout << "[WARN] Empty dateTime at " << path        /// remove later @@@@@@@@@@@
-                    << ":" << lineNumber << ", skipping row\n";         /// remove later @@@@@@@@@@@
-                continue;
-            }
-
-            /// --- Split Date/Time ---
-            string dateVal, timeVal;
-            stringstream dt(dateTime);
-            getline(dt, dateVal, ' ');
-            getline(dt, timeVal);
-
-            /// --- Parse date ---
-            string dayStr, monthStr, yearStr;
-            stringstream dateSS(dateVal);
-            getline(dateSS, dayStr, '/');
-            getline(dateSS, monthStr, '/');
-            getline(dateSS, yearStr);
-
-            int day   = std::stoi(dayStr);
-            int month = std::stoi(monthStr);
-            int year  = std::stoi(yearStr);
-            Date d(day, month, year);
-
-            /// --- Parse time ---
-            string hourStr, minStr;
-            stringstream timeSS(timeVal);
-            getline(timeSS, hourStr, ':');
-            getline(timeSS, minStr);
-
-            int hour   = std::stoi(hourStr);
-            int minute = std::stoi(minStr);
-            Time t(hour, minute);
-
-            if (windSpd.empty() || solarRad.empty() || ambAir.empty()) {
-                std::cerr << "[WARN] Missing numeric field at "             /// remove later @@@@@@@@@@@
-                          << path << ":" << lineNumber
-                          << " [S='" << windSpd
-                          << "', SR='" << solarRad
-                          << "', T='" << ambAir << "'], skipping row\n";
-                continue;
-            }
-
-            /// --- Parse numeric values ---
-            float speed   = std::stof(windSpd);
-            float solar   = std::stof(solarRad);
-            float ambient = std::stof(ambAir);
-
-            /// --- Create WeatherType record ---
-            WeatherType record;
-            record.setDate(d);
-            record.setTime(t);
-            record.setSpeed(speed);
-            record.setSolarRad(solar);
-            record.setAirTemp(ambient);
-
-            /// Insert into main container (BST, via WeatherData typedef)
-            weather_data.insert(record);
-
-            /// Insert into weather_map as well
-            if (weather_map) {
-                WeatherKey key = makeWeatherKey(record);            /// (year, month)
-                WeatherMonthlyStats& stats = (*weather_map)[key];   /// creates if not present
-
-                stats.speeds.push_back(speed);
-                stats.temps.push_back(ambient);
-                stats.solars.push_back(solar);
-            }
-
-        }
         catch (const std::exception& ex) {                      /// remove later @@@@@@@@@@@
         std::cerr << "[WARN] Skipping bad row in " << path
                   << " at line " << lineNumber
